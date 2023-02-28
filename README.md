@@ -32,6 +32,56 @@ In terms of saving, I'm thinking of either a JSON format, or Object serializatio
 
 I want to use state-based logic to control the gameloop and scenes, and I want to tie the 'tick' of the game to player input. Thus, the game will only process the loop on user input. 
 
+## Project Class Code Explanations
+
+#### [Dungeon Crawler Controller :: loadLevel1](https://github.com/arcaniussainey/CS161-2023-DungeonCrawler/blob/main/DungeonCrawler/src/main/java/game/DungeonCrawlerController.java#L66)
+This function's job is to load the first level of the game. Most importantly, it loads the "level" scene, onto which levels can actually be drawn. 
+
+To accomplish this it must find the canvas instance in the new scene and set our variable to it. Once it does that, it checks for a save-file and tries to setup the player and stage state. This could also be where our tilemap is setup, and so it will likely steal that from initialize, and undergo a renaming. 
+```Java 
+@FXML // make visible to FXML
+	void loadLevel1(ActionEvent event) throws Throwable {
+		String name = nameTxt.getText();
+		loadScene(event, "level1.fxml");
+		
+		for (Object ob : root.getChildrenUnmodifiable()) {
+   // search from scene root for canvas objects
+			if (ob instanceof Canvas) {
+				this.scene_canvas = (Canvas) ob;
+    // set to canvas object, if it is confirmed to be an instance of Canvas
+			}
+		}
+		// this is the only way out of start, so we'll change scene here
+		boolean proper_save = loadSaveFile();
+  // loadSaveFile returns true if it succeeds. 
+		if (!proper_save) {
+   // if the save file failed then we simply create a new player in the start coordinate. May later decide to make the start coordinate a map variable.  
+			player_character = new Player(name, new Coordinate(0, 0), 100, 10, 1, 4);
+			DungeonCrawlerController.game_map.setActor(new Coordinate(2, 2), player_character); // place the player in middle of scene. Use set actor as it ensures both the tilemap and the entity know their positions. 
+		}
+		current_stage = StageState.GAME;
+		Render(); // call the canvas render
+	}
+```
+
+#### [Dungeon Crawler Controller :: initialize](https://github.com/arcaniussainey/CS161-2023-DungeonCrawler/blob/main/DungeonCrawler/src/main/java/game/DungeonCrawlerController.java#L59)
+I make this function accessible to JavaFX because it is the first thing JavaFX runs. the goal of this function is to initialize everything that will actually be used to control the game behind the scenes. 
+
+Most importantly is making sure that everything our scene needs is setup, so the states for the state-machine, and the tilemap. When map loading is added, it will be more logical to just call the function that handles the map-file and default rather than directly set the tilemap. 
+
+```Java 
+@FXML
+	public void initialize() {
+		// "this" corresponds to DungeonCrawlerController, but we don't use it because it's a static variable
+		DungeonCrawlerController.game_map = new TileMap(15, 15);
+  // sets up map
+  
+		DungeonCrawlerController.current_stage = StageState.START;
+		DungeonCrawlerController.game_state = GameState.PLAYERMOVE;
+  // sets up state machine variables. 
+	}
+```
+
 ## Project Class Structure 
 
 This represents the actual structure of the classes and Gameloop within the game. 
