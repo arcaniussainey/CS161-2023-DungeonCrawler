@@ -5,7 +5,7 @@ import java.io.Serializable;
 import javafx.scene.image.Image;
 
 public class Player extends Entity implements Serializable{
-
+	public List<Item> inventory;
 	
 	/**
 	 * 
@@ -19,7 +19,7 @@ public class Player extends Entity implements Serializable{
 		this.max_health = max_health_in;
 		this.health = health_in;
 		this.regen_amount = regen_amount_in;*/
-		this.img_url = "https://www.giantbomb.com/a/uploads/scale_medium/3/34651/1475064-gandalf.jpg";
+		this.img_url = "https://www.giantbomb.com/a/uploads/scale_medium/3/34651/1475064-gandalf.jpg"; // to allow reset after serialization
 		this.sprite = new Image("https://www.giantbomb.com/a/uploads/scale_medium/3/34651/1475064-gandalf.jpg");
 		
 		/*
