@@ -45,7 +45,6 @@ public abstract class Entity extends Actor implements Serializable {
 	// Entity standard behavior stuff
 	@Override
 	public Decision movedOn(Entity actor_in) {
-		// TODO Auto-generated method stub
 		// defend themselves when moved on lol. 
 		actor_in.damage(attack);
 		this.damage(actor_in.attack);
@@ -53,6 +52,7 @@ public abstract class Entity extends Actor implements Serializable {
 			return new Reject(" moved towards you!");
 		} else {
 			return new Accept(this.name + " Was killed");
+			// accept and die 
 		}
 	}
 	
@@ -77,6 +77,7 @@ public abstract class Entity extends Actor implements Serializable {
 	
 	public void die() {
 		DungeonCrawlerController.game_map.announceDead(this.Position);
+		// have the tilemap remove them from the board. 
 	}
 	
 	
