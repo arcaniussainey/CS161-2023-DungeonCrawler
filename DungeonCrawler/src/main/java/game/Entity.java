@@ -10,11 +10,11 @@ public abstract class Entity extends Actor implements Serializable {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	int max_health; 
-	int health;
-	int regen_amount;
+	public int max_health; 
+	public int health;
+	public int regen_amount;
 	
-	int attack = 1; // could very easily add a map of stats, but its not in the wishlist sooo? 
+	public int attack = 1; // could very easily add a map of stats, but its not in the wishlist sooo? 
 	
 	Entity(String name_in, Coordinate pos, int max_health_in, int health_in, int regen_amount_in){
 		this.name = name_in;
