@@ -562,6 +562,36 @@ Then we return the NextStage.
 
 This represents the actual structure of the classes and Gameloop within the game. 
 
+### Stage States
+
+```mermaid
+stateDiagram-v2
+    [*] --> Start
+    Start --> Game
+    Game --> Inventory
+    Inventory --> Game
+    Game --> Death
+    Death --> [*]
+    
+```
+
+### Game States
+```mermaid
+---
+GAME
+---
+stateDiagram-v2
+	[*] --> PLAYERMOVE
+		PLAYERMOVE --> ENEMYMOVE
+		ENEMYMOVE --> PLAYERMOVE
+        PLAYERMOVE --> COMBAT
+		ENEMYMOVE --> COMBAT
+		COMBAT --> DEATH
+		COMBAT --> PLAYERMOVE
+		PLAYERMOVE --> DEATH
+		DEATH --> [*]
+```
+
 ### Decision Types
 ```mermaid 
 classDiagram 
