@@ -153,6 +153,7 @@ public class DungeonCrawlerController {
 		switch (current_stage) {
 			case GAME:
 				current_stage = GameLoop(event_in);
+				Render();
 				break;
 				// If we're on the game stage, send all input to the gameloop
 			case INVENTORY:
@@ -165,9 +166,6 @@ public class DungeonCrawlerController {
 			default:
 				break;
 			}
-		if (current_stage == StageState.GAME) {
-			Render(); // render changes to canvas
-		}
 	}
 	
 	public StageState GameLoop(KeyEvent event_in) {
