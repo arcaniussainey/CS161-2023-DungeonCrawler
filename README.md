@@ -34,15 +34,20 @@ I want to use state-based logic to control the gameloop and scenes, and I want t
 
 ## Project Class Code Explanations
 
-#### [Dungeon Crawler Controller :: loadLevel1](https://github.com/arcaniussainey/CS161-2023-DungeonCrawler/blob/main/DungeonCrawler/src/main/java/game/DungeonCrawlerController.java#L66)
-This function's job is to load the first level of the game. Most importantly, it loads the "level" scene, onto which levels can actually be drawn. 
+#### 
 
-To accomplish this it must find the canvas instance in the new scene and set our variable to it. Once it does that, it checks for a save-file and tries to setup the player and stage state. This could also be where our tilemap is setup, and so it will likely steal that from initialize, and undergo a renaming. 
+#### [Dungeon Crawler Controller :: loadLevel1](https://github.com/arcaniussainey/CS161-2023-DungeonCrawler/blob/main/DungeonCrawler/src/main/java/game/DungeonCrawlerController.java#L66)
+This function's job is to load the first level of the game. Most importantly, it loads the "level" scene, onto which levels can actually be drawn, and sets the variable for the players name. 
+
 ```Java 
 @FXML // make visible to FXML
 	void loadLevel1(ActionEvent event) throws Throwable {
 		String name = nameTxt.getText();
 		loadScene(event, "level1.fxml");
+```
+
+To allow the TileMap to be drawn, we must find the scene canvas. We do this by looping all objects under the scene root, and checking if they're an instance of the Canvas class. 
+```Java
 		
 		for (Object ob : root.getChildrenUnmodifiable()) {
    // search from scene root for canvas objects
@@ -52,6 +57,9 @@ To accomplish this it must find the canvas instance in the new scene and set our
 			}
 		}
 		// this is the only way out of start, so we'll change scene here
+```
+We must also load the save, change the scene, instantiate the player, and render the tilemap
+``` Java
 		boolean proper_save = loadSaveFile();
   // loadSaveFile returns true if it succeeds. 
 		if (!proper_save) {
@@ -85,6 +93,28 @@ Most importantly is making sure that everything our scene needs is setup, so the
 ## Project Class Structure 
 
 This represents the actual structure of the classes and Gameloop within the game. 
+
+### Decision Types
+```mermaid 
+classDiagram 
+	Decision <|-- Accept
+	Decision <|-- Reject
+	Decision: +String message
+	Decision: +Actor decided_actor
+	Decision: +boolean try_again
+	
+	class Accept {
+	  +void acceptActor(Actor act_in)
+	  try_again = false
+	  }
+	class Reject {
+	  +void acceptActor(Actor act_in)
+	}
+
+```
+
+### TileMap
+
 
 ### Actor Classes
 
@@ -121,4 +151,28 @@ classDiagram
         +List<Item> inventory
         +String toString()
     }
+```
+
+### SaveType 
+```mermaid
+---
+title: SaveType
+---
+classDiagram 
+	class SaveType
+	SaveType: -int player_hp
+	SaveType: -int player_max
+	SaveType: -int player_regen
+	SaveType: -int player_attack
+	SaveType: -List<Item> player_inv
+	SaveType: -Coordinate player_pos
+	SaveType: -String player_name
+	SaveType: -String image_addr
+	SaveType: -List<Act> frame_acts
+	SaveType: -int[] table_dim
+	SaveType: -Set tile_data
+	SaveType: -Coordinate screen_pos
+	SaveType: +seconds_played
+	SaveType: +unpackPlayer() Player
+	SaveType: +unpackTileMap() TileMap
 ```
