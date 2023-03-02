@@ -34,7 +34,135 @@ I want to use state-based logic to control the gameloop and scenes, and I want t
 
 ## Project Class Code Explanations
 
-#### 
+### Fundamental Classes
+Classes used throughout this game for simplicity or clarity. 
+
+#### [Decision](https://github.com/arcaniussainey/CS161-2023-DungeonCrawler/blob/86aa9b404216de1eaea6912fe6202551523dc5f2/DungeonCrawler/src/main/java/game/Decision.java#L3)
+The Decision class exists as a parent to the state of Decisions, Accepted (implemented as ```Accept```) and Rejected (implemented at ```Reject```). The benefit of shared inheritance in a situation like this is that methods can accept, return, or look for the Decision class instead of BOTH Accept and Reject. This just simplifies certain things. It also standardizes the fields of both subclasses so nothing breaks. 
+```Java
+public abstract class Decision {
+	...
+	public String message;
+	public Actor decided_actor;
+	public boolean try_again = true; // set this to false if a decision should be consumed
+	... 
+	
+	Decision(String msg){
+		this.message = msg;
+	}
+	
+	Decision(){
+		this("No message given");
+	}
+}
+```
+
+#### [Accept](https://github.com/arcaniussainey/CS161-2023-DungeonCrawler/blob/2a763f2d72a9918eee425e3a792d4dcd0b89ea9a/DungeonCrawler/src/main/java/game/Accept.java#L3) and [Reject](https://github.com/arcaniussainey/CS161-2023-DungeonCrawler/blob/2a763f2d72a9918eee425e3a792d4dcd0b89ea9a/DungeonCrawler/src/main/java/game/Reject.java#L3)
+Represent a decision being accepted or rejected. Mainly used for TileMap. 
+```Java
+public class Accept extends Decision {
+	...
+	public String message;
+	public Actor decided_actor; // this may be unneeded, it's added in case I decide to use it for the tilemap
+	
+	Accept(String msg){
+		this.message = msg;
+		this.try_again = false; // If a move is accepted there's no reason to go again. 
+	}
+	
+	public void acceptActor(Actor act_in) {
+		this.decided_actor = act_in;
+	}
+}
+
+public class Reject extends Decision {
+	...
+	public String message;
+	public Actor decided_actor; // this may be unneeded, it's added in case I decide to use it for the tilemap
+	
+	Reject(String msg){
+		this.message = msg;
+	}
+	
+	public void acceptActor(Actor act_in) {
+		this.decided_actor = act_in;
+	}
+}
+```
+
+#### [Coordinate](https://github.com/arcaniussainey/CS161-2023-DungeonCrawler/blob/cbd9abc9a0c70b25356165360b6832f9f820b8a6/DungeonCrawler/src/main/java/game/Coordinate.java#L5)
+
+This class exists to holds <X,Y> coordinate pairs as a single object. This allows us to evaluate them inside of a HashMap~ It also returns the coordinate in the Forward, Left, Right, and Backward direction. This lets entities access their own coordinate to find the next direction. 
+
+```Java
+public class Coordinate implements Serializable{
+	private static final long serialVersionUID = 3852177980206932549L;
+	int x;
+	int y;
+	
+	int getX() { return this.x;}
+	int getY() { return this.y;}
+	
+	Coordinate(int x_in, int y_in){
+		this.x = x_in;
+		this.y = y_in;
+	}
+```
+
+Very simple internal structure and setup. 
+
+```Java
+	int[] getPos() {
+		return new int[] {this.x, this.y};
+	}
+	
+	Coordinate Forward() {
+		return new Coordinate(this.x, this.y - 1);
+	}
+	
+	Coordinate Backward() {
+		return new Coordinate(this.x, this.y + 1);
+	}
+	
+	Coordinate Left() {
+		return new Coordinate(this.x - 1, this.y);
+	}
+	
+	Coordinate Right() {
+		return new Coordinate(this.x + 1, this.y);
+	}
+```
+
+Return the coordinate, as well as cardinal coordinates relative to current coordinate. 
+
+```Java 
+@Override 
+	public boolean equals(Object o) {
+		if (o == null) {
+			return false;
+		}
+		else if (o.getClass() != this.getClass()) {
+			return false;
+		}
+		if (o.getClass() == this.getClass()) {
+			if (((Coordinate) o).getX() == this.getX() && ((Coordinate) o).getY() == this.getY()) {
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	@Override 
+	public int hashCode() {
+		int first_half = this.x * 17 + 12;
+		int second_half = this.y * 20 + 5;
+		//OLD: return ((first_half + second_half) + (first_half+second_half)%16 + this.x - this.y);
+		return (int)((first_half + second_half) + (first_half+second_half)%16 + java.lang.Math.pow(this.x, java.lang.Math.PI) - java.lang.Math.pow(this.y, java.lang.Math.PI));
+		// I have updated this, I believe the old method had more collisions
+	}
+```
+Implements the necessary methods for hashmap to store compare if these objects are the same. 
+
 
 #### [Dungeon Crawler Controller :: loadLevel1](https://github.com/arcaniussainey/CS161-2023-DungeonCrawler/blob/main/DungeonCrawler/src/main/java/game/DungeonCrawlerController.java#L66)
 This function's job is to load the first level of the game. Most importantly, it loads the "level" scene, onto which levels can actually be drawn, and sets the variable for the players name. 
