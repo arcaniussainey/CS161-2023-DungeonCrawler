@@ -372,10 +372,10 @@ classDiagram
 	TileMap: +HashMap Tiles
 	TileMap: +Coordinate map_position
 	TileMap: +requestMove(Coordinate move_to, Entity requestor) Decision
-	TileMap: announceDead(Coordinate pos) void
-	TileMap: getActor(Coordinate pos) Actor
-	TileMap: getDimensions() int[]
-	TileMap: setActor(Coordinate pos, Actor actor) void
+	TileMap: +announceDead(Coordinate pos) void
+	TileMap: +getActor(Coordinate pos) Actor
+	TileMap: +getDimensions() int[]
+	TileMap: +setActor(Coordinate pos, Actor actor) void
 ```
 ### Actor Classes
 
