@@ -369,9 +369,9 @@ classDiagram
 	class TileMap
 	TileMap: -int x
 	TileMap: -int y
-	Tilemap: +HashMap Tiles
+	TileMap: +HashMap Tiles
 	TileMap: +Coordinate map_position
-	Tilemap: +requestMove(Coordinate move_to, Entity requestor) Decision
+	TileMap: +requestMove(Coordinate move_to, Entity requestor) Decision
 	TileMap: announceDead(Coordinate pos) void
 	TileMap: getActor(Coordinate pos) Actor
 	TileMap: getDimensions() int[]
