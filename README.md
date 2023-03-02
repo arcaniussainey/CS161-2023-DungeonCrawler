@@ -163,6 +163,96 @@ Return the coordinate, as well as cardinal coordinates relative to current coord
 ```
 Implements the necessary methods for hashmap to store compare if these objects are the same. 
 
+#### [TileMap](https://github.com/arcaniussainey/CS161-2023-DungeonCrawler/blob/ccccc2fc40e80e4d91ac81636615678327d6b999/DungeonCrawler/src/main/java/game/TileMap.java#L6)
+The TileMap accepts dimensions, and loops over those dimensions to create a list of actor and coordinate key value pairs. The default is the NullActor. This is the reason for the NullActor's existence. 
+
+```Java
+public class TileMap implements Serializable{
+	...
+	public HashMap<Coordinate, Actor> Tiles;
+	public Coordinate map_position;
+	protected int x;
+	protected int y;
+	
+	TileMap(int dim_x, int dim_y){
+		this.x = dim_x;
+		this.y = dim_y;
+		Tiles = new HashMap<Coordinate, Actor>();
+		// the tilemap must know the requested dimensions. 
+		for (int i = 0; i < dim_x; i++) {
+			for (int j=0; j<dim_y; j++) {
+				Tiles.put(new Coordinate(i, j), new NullActor(new Coordinate(i, j)));
+				// instantiate the tilemap and its actual values. 
+			}
+		}
+		this.map_position = new Coordinate(0,0);
+	}
+```
+#### [TileMap :: requestMove](https://github.com/arcaniussainey/CS161-2023-DungeonCrawler/blob/ade5bd6d2d69147e8cf787056bbb9090ed439604/DungeonCrawler/src/main/java/game/TileMap.java#L30)
+The TileMap also evaluates move requests. 
+
+```Java
+	public Decision requestMove(Coordinate move_to, Entity requestor){
+```
+Place to move, and the entity-type requesting the move. Entity is a subtype of Actor, and only Entity's should make requests. 
+```Java	
+		Decision canMove;
+		Actor tile_holder = null; // allows a null check very clearly
+		tile_holder = Tiles.get(move_to);
+```
+Create a canMove decision, then get the Actor presently in that position. If the requested coordinate doesn't exist within the tilemap, then it's not a valid move and can be rejected. If the coordinate does exist, get its actor and store them. 
+```Java
+		if (tile_holder != null) {
+			canMove = tile_holder.movedOn(requestor);
+```
+If the tile is held and within the map, then pass the request onto them for them to evaluate. They return either accept or reject. 
+```Java 
+			if (canMove instanceof Accept) {
+```
+If they accept it, then make the actual changes to the board. 
+```Java
+				Tiles.put(requestor.Position, new NullActor(requestor.Position));
+				Tiles.put(move_to, requestor);
+				requestor.Position = move_to; // make sure the actor knows their new position
+				// We make the old position of the requester null
+				// we make the position of move_to occupied by the requester. I misspelled requestor. FRIG.  
+			}
+		} else {
+			canMove = new Reject("You cannot move to a tile outside the field");
+			// this could implement chunks pretty easily
+			// because we could have each tilemap hold the four bordering it,
+			// And see which it went into, and then convert it to a coordinate 
+			// within that tilemap
+		}
+		
+		return canMove;
+		
+	}
+
+```
+The TileMap handles death announcements, as well as setting and getting actors. 
+
+```Java
+	public void announceDead(Coordinate pos) {
+		Tiles.put(pos, new NullActor(pos));
+		// announce the death of entity
+	}
+	
+	public Actor getActor(Coordinate pos) {
+		if (Tiles.get(pos) != null)
+			return Tiles.get(pos);
+		else return null;
+	}
+	
+	public void setActor(Coordinate pos, Actor actor) {
+		Tiles.put(pos, actor);
+		actor.Position = pos;
+	}
+```
+
+
+### Main methods
+
 
 #### [Dungeon Crawler Controller :: loadLevel1](https://github.com/arcaniussainey/CS161-2023-DungeonCrawler/blob/main/DungeonCrawler/src/main/java/game/DungeonCrawlerController.java#L66)
 This function's job is to load the first level of the game. Most importantly, it loads the "level" scene, onto which levels can actually be drawn, and sets the variable for the players name. 
