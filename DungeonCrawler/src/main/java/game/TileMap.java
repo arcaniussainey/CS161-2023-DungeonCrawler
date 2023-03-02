@@ -65,6 +65,11 @@ public class TileMap implements Serializable{
 		else return null;
 	}
 	
+	public int[] getDimensions(){
+		return new int {this.x, this.y};
+		// added to assist in creating SaveType
+	}
+	
 	public void setActor(Coordinate pos, Actor actor) {
 		Tiles.put(pos, actor);
 		actor.Position = pos;
