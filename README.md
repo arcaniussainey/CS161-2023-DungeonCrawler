@@ -134,7 +134,7 @@ The early setup of the ```loadScene``` method simple grabs the scene root, sets 
 	}
 	
 ```
-#### [Dungeon Crawler Controller :: Update] (https://github.com/arcaniussainey/CS161-2023-DungeonCrawler/blob/experimental/DungeonCrawler/src/main/java/game/DungeonCrawlerController.java#L152)
+#### [Dungeon Crawler Controller :: Update](https://github.com/arcaniussainey/CS161-2023-DungeonCrawler/blob/experimental/DungeonCrawler/src/main/java/game/DungeonCrawlerController.java#L152)
 This method simple evaluates the current stage of the game, and runs the corresponding stageloop. It switches on the ```current_stage``` which is a StageState enum value of the current stage. The called function returns the next stage of the game. 
 ```Java
 public static void Update(KeyEvent event_in) throws Throwable {
@@ -159,7 +159,7 @@ public static void Update(KeyEvent event_in) throws Throwable {
 
 Following this, the loop responsible for processing the corresponding stage runs. At present, that is either the InventoryLoop or the GameLoop. Only GameLoop is implemented as of now, simply because I'm not sure what purpose/use the inventory will have yet. 
 
-#### [Dungeon Crawler Controller :: GameLoop] (https://github.com/arcaniussainey/CS161-2023-DungeonCrawler/blob/experimental/DungeonCrawler/src/main/java/game/DungeonCrawlerController.java#L171)
+#### [Dungeon Crawler Controller :: GameLoop](https://github.com/arcaniussainey/CS161-2023-DungeonCrawler/blob/experimental/DungeonCrawler/src/main/java/game/DungeonCrawlerController.java#L171)
 This method evaluates the current state of the game, ```game_state``` which is a GameState enum value. It returns a StageState as the next stage of the game on its completion. 
 
 First we make sure that there will always be a valid stage returned. In this case, it's the stage currently active. This is changed actively, so it's a good default value. 
@@ -182,7 +182,7 @@ case ENEMYMOVE:
 
 ActorTick simply exists to ensure all actors are updated. It loops over the activites that all actors should take every frame, and invokes their methods. This would include things like health regen, poison or burning, and other constant effects. It's also where Enemy decision making methods should be added, as it will result in them taking their turn. 
 
-#### [Dungeon Crawler Controller :: ActorTick] (https://github.com/arcaniussainey/CS161-2023-DungeonCrawler/blob/experimental/DungeonCrawler/src/main/java/game/DungeonCrawlerController.java#L265)
+#### [Dungeon Crawler Controller :: ActorTick](https://github.com/arcaniussainey/CS161-2023-DungeonCrawler/blob/experimental/DungeonCrawler/src/main/java/game/DungeonCrawlerController.java#L265)
 ```Java
 public void ActorTick() {
 	for (Entry<Coordinate, Actor> map_entry : DungeonCrawlerController.game_map.Tiles.entrySet()) {
@@ -238,7 +238,7 @@ If the cardinal direction is unavailable then the actor can rely on the strength
 Now the cardinal direction is a valid option, so it beelines for the player. 
 ```
 
-#### [Dungeon Crawler Controller :: GameLoop (continued)] (https://github.com/arcaniussainey/CS161-2023-DungeonCrawler/blob/experimental/DungeonCrawler/src/main/java/game/DungeonCrawlerController.java#L171)
+#### [Dungeon Crawler Controller :: GameLoop (continued)](https://github.com/arcaniussainey/CS161-2023-DungeonCrawler/blob/experimental/DungeonCrawler/src/main/java/game/DungeonCrawlerController.java#L171)
 The alternative is that it's the PLAYERMOVE state. In that case, we pass the input to evaluate it via the player's input rules. 
 ```Java 
 case PLAYERMOVE:
@@ -246,7 +246,7 @@ case PLAYERMOVE:
 	break;
 ```
 
-#### [Dungeon Crawler Controller :: PlayerAction] (https://github.com/arcaniussainey/CS161-2023-DungeonCrawler/blob/experimental/DungeonCrawler/src/main/java/game/DungeonCrawlerController.java#L208)
+#### [Dungeon Crawler Controller :: PlayerAction](https://github.com/arcaniussainey/CS161-2023-DungeonCrawler/blob/experimental/DungeonCrawler/src/main/java/game/DungeonCrawlerController.java#L208)
 PlayerAction evaluates the ```event_in``` event to determine which character it is, and whether it should react. 
 
 ```Java
