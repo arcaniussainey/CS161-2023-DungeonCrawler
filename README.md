@@ -50,10 +50,10 @@ To allow the TileMap to be drawn, we must find the scene canvas. We do this by l
 ```Java
 		
 		for (Object ob : root.getChildrenUnmodifiable()) {
-   // search from scene root for canvas objects
+   			// search from scene root for canvas objects
 			if (ob instanceof Canvas) {
 				this.scene_canvas = (Canvas) ob;
-    // set to canvas object, if it is confirmed to be an instance of Canvas
+   				 // set to canvas object, if it is confirmed to be an instance of Canvas
 			}
 		}
 		// this is the only way out of start, so we'll change scene here
@@ -61,9 +61,9 @@ To allow the TileMap to be drawn, we must find the scene canvas. We do this by l
 We must also load the save, change the scene, instantiate the player, and render the tilemap
 ``` Java
 		boolean proper_save = loadSaveFile();
-  // loadSaveFile returns true if it succeeds. 
+  		// loadSaveFile returns true if it succeeds. 
 		if (!proper_save) {
-   // if the save file failed then we simply create a new player in the start coordinate. May later decide to make the start coordinate a map variable.  
+   		// if the save file failed then we simply create a new player in the start coordinate. May later decide to make the start coordinate a map variable.  
 			player_character = new Player(name, new Coordinate(0, 0), 100, 10, 1, 4);
 			DungeonCrawlerController.game_map.setActor(new Coordinate(2, 2), player_character); // place the player in middle of scene. Use set actor as it ensures both the tilemap and the entity know their positions. 
 		}
@@ -82,11 +82,11 @@ Most importantly is making sure that everything our scene needs is setup, so the
 	public void initialize() {
 		// "this" corresponds to DungeonCrawlerController, but we don't use it because it's a static variable
 		DungeonCrawlerController.game_map = new TileMap(15, 15);
-  // sets up map
+  		// sets up map
   
 		DungeonCrawlerController.current_stage = StageState.START;
 		DungeonCrawlerController.game_state = GameState.PLAYERMOVE;
-  // sets up state machine variables. 
+  		// sets up state machine variables. 
 	}
 ```
 
@@ -119,19 +119,19 @@ The machine's step invocation (the tick) is linked to user input, within the loa
 The early setup of the ```loadScene``` method simple grabs the scene root, sets the stage and scene, and shows them. Onto this, we add an event filter for ```KeyEvent.KEY_TYPED``` events. This is what executes out Gameloop, the ```Update``` method. 
 ```Java
 @FXML
-	void loadScene(ActionEvent event, String sceneName) throws IOException {
-		... // lines 109-117
-		scene.addEventFilter(KeyEvent.KEY_TYPED,  
-		        scene_event -> {
-					try {
-						Update(scene_event);
-					} catch (Throwable e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
+void loadScene(ActionEvent event, String sceneName) throws IOException {
+	... // lines 109-117
+	scene.addEventFilter(KeyEvent.KEY_TYPED,  
+		scene_event -> {
+				try {
+					Update(scene_event);
+				} catch (Throwable e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
 				}
-		);
-	}
+			}
+	);
+}
 	
 ```
 #### [Dungeon Crawler Controller :: Update](https://github.com/arcaniussainey/CS161-2023-DungeonCrawler/blob/experimental/DungeonCrawler/src/main/java/game/DungeonCrawlerController.java#L152)
@@ -324,20 +324,20 @@ switch (event_in.getCharacter().toUpperCase().charAt(0)) {
 Once input is evaluated, we decide whether or not the player gets to move again. This is basically just dependent on whether or not the move attempt was against something invalid like a wall. Otherwise, enemies are expected to set this to false. The NullActor always sets this to false. 
 
 ```Java
-if (move_decision != null) {
-	// this means it was a movement 
-	if (move_decision.try_again) {
-		DungeonCrawlerController.game_state = GameState.PLAYERMOVE;
-	} else {
-		DungeonCrawlerController.game_state = GameState.ENEMYMOVE;
+	if (move_decision != null) {
+		// this means it was a movement 
+		if (move_decision.try_again) {
+			DungeonCrawlerController.game_state = GameState.PLAYERMOVE;
+		} else {
+			DungeonCrawlerController.game_state = GameState.ENEMYMOVE;
+		}
 	}
-}
 ```
 
 Then we return the NextStage.
 
 ```Java
-return NextStage;
+	return NextStage;
 ```
 
 ## Project Class Structure 
