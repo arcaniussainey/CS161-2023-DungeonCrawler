@@ -58,6 +58,6 @@ public class Coordinate implements Serializable{
 	public int hashCode() {
 		int first_half = this.x * 17 + 12;
 		int second_half = this.y * 20 + 5;
-		return ((first_half + second_half) + (first_half+second_half)%16 + this.x - this.y);
+		return (int)((first_half + second_half) + (first_half+second_half)%16 + java.lang.Math.pow(this.x, java.lang.Math.PI) - java.lang.Math.pow(this.y, java.lang.Math.PI));
 	}
 }
