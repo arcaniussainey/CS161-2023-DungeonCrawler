@@ -149,7 +149,7 @@ public class DungeonCrawlerController {
 	 * 		have "magic numbers" - numbers with no obvious meaning. 
 	 */
 	
-	public void Update(KeyEvent event_in) throws Throwable {
+	public static void Update(KeyEvent event_in) throws Throwable {
 		switch (current_stage) {
 			case GAME:
 				current_stage = GameLoop(event_in);
