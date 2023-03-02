@@ -12,7 +12,13 @@ public class Player extends Entity implements Serializable{
 	 */
 	private static final long serialVersionUID = 1L;
 
-	Player(String name_in, Coordinate pos, int max_health_in, int health_in, int regen_amount_in, int attack_strength){
+	Player(		String name_in, 
+			Coordinate pos, 
+			int max_health_in, 
+			int health_in, 
+			int regen_amount_in, 
+			int attack_strength){
+		
 		super(name_in, pos, max_health_in, health_in, regen_amount_in);
 		/* this.name = name_in;
 		this.Position = pos;
