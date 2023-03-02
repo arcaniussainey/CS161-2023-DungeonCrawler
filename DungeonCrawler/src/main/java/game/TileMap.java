@@ -93,7 +93,7 @@ public class TileMap implements Serializable{
 	
 
 
-	public String[] saveOut() {
-		return new String[3];
+	public String[] mapOut(){
+		// Return a 2d array of the map for possible A* algorithm use?
 	}
 	}
