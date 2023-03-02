@@ -376,7 +376,7 @@ classDiagram
 	TileMap: getActor(Coordinate pos) Actor
 	TileMap: getDimensions() int[]
 	TileMap: setActor(Coordinate pos, Actor actor) void
-
+```
 ### Actor Classes
 
 ```mermaid
