@@ -534,6 +534,7 @@ Otherwise we attempt to save the game.
 
 ```Java
 switch (event_in.getCharacter().toUpperCase().charAt(0)) {
+	...// other cases
 	case 'P':
 		saveFile(); 
 		NextStage = StageState.GAME;
