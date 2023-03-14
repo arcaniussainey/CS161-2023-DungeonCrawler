@@ -37,6 +37,8 @@ public class SaveType implements Serializable {
 		this.frame_acts = play_in.frameActs;
 		// saves all player data
 		// Honestly just because I don't wanna work with making Player class genuinely serializeable. 
+		
+		// Tilemap SHOULD be serializeable?? But we'll see if data restoration like this is better
 		this.table_dim = game_map.getDimensions(); 
 		this.tile_data = game_map.entrySet(); 
 		this.screen_pos = game_map.map_position;
