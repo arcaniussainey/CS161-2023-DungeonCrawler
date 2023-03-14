@@ -92,4 +92,7 @@ public class TileMap implements Serializable{
 	 * 		In the case of enemies, only death should result in an accept. 
 	 * 		In the case of traps, they accept and damage the requester. 
 	 */
-	}
+	
+}
+
+	
